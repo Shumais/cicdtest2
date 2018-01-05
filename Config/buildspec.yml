@@ -1,0 +1,36 @@
+version: 0.2
+env:
+  variables:
+      CODEBUILD_SRC_DIR: "./Config/buildspec.yml"
+phases:
+  #install:
+    #commands:
+      # - command
+      # - command
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      - ls
+      - pwd
+      - cd Code/
+      - pwd
+      - ls
+      - mvn test || exit 0
+      - mvn clean package shade:shade || exit 0
+      - aws cloudformation package --template-file template.json --s3-bucket codeanalysis-report-bucket 
+                                   --output-template-file NewTemplate.json     
+      # - command
+      # - command
+  #post_build:
+    #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+     - NewTemplate.json
+    # - location
+  discard-paths: yes
+  base-directory: Code

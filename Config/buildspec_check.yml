@@ -1,0 +1,43 @@
+version: 0.2
+
+env:
+  variables:
+      CODEBUILD_SRC_DIR: "./Config/buildspec_check.yml"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+
+phases:
+  install:
+    commands:
+       - sudo apt-get install zip gzip tar
+      # - command
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+        - cd Code
+        - mvn clean package || exit 0 
+        - mvn site || exit 0
+        - mkdir ./target/example
+        - cp ./target/pmd.xml ./target/example
+        - cp ./target/site/jacoco/jacoco.xml ./target/example
+        - cp ./target/site/checkstyle.html ./target/example
+        - zip -r ./target/reports.zip ./target/example
+        - aws s3 cp ./target/reports.zip s3://codeanalysis-report-bucket/
+      # - command
+  #post_build:
+    #commands:
+      # - command
+      # - command
+artifacts:
+  files:
+     - ./target/site/jacoco/jacoco.xml
+     - ./target/pmd.xml
+     - ./target/site/checkstyle.html
+     - ./target
+  discard-paths: yes
+  base-directory: Code
