@@ -29,7 +29,7 @@
 				  "PolicyName": "root",
 				  "PolicyDocument": {
 					"Version": "2012-10-17",
-					"Statement": [{ "Effect": "Allow", "Action": ["logs:*","s3:*"], "Resource": ["arn:aws:logs:*:*:*","arn:aws:s3:::ci-cd-results/" ]}]
+					"Statement": [{ "Effect": "Allow", "Action": ["logs:*","s3:*"], "Resource": ["arn:aws:logs:*:*:*","arn:aws:s3:::codeanalysis-report-bucket/" ]}]
 				  }
 				}]
 			  }
